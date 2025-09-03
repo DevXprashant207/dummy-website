@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panic Button - Smart Tourist Safety</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Outfit", sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ef4444, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+
+    input[type="tel"] {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      width: 200px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.08);
+      color: #f1f5f9;
+      text-align: center;
+    }
+
+    input[type="tel"]:focus {
+      outline: 2px solid #06b6d4;
+    }
+
+    .save-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(90deg,#06b6d4,#7c3aed);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+
+    .save-btn:hover { opacity: 0.9; }
+
+    /* Panic Button */
+    .panic-btn {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at top left, #ef4444, #dc2626);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: pulse 1.5s infinite;
+    }
+
+    .panic-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 50px rgba(239, 68, 68, 1);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .sos-log, .contacts {
+      margin-top: 25px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      font-size: 0.95rem;
+      text-align: left;
+      line-height: 1.5;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .sos-log strong, .contacts strong {
+      color: #f87171;
+    }
+
+    .contact-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .contact-item:last-child { border-bottom: none; }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚨 Panic Button</h1>
+  <p>Press the button to send SOS with your live location automatically to your SOS number and emergency contacts.</p>
+
+  <input type="tel" id="sosNumber" placeholder="Enter SOS Number" />
+  <button class="save-btn" id="saveNumberBtn">Save Number</button>
+
+  <button class="panic-btn" id="panicBtn">SOS</button>
+
+  <div class="sos-log" id="sosLog">
+    No SOS sent yet.
+  </div>
+
+  <div class="contacts" id="contacts">
+    <h3>📞 Nearest Emergency Contacts</h3>
+    <div id="police">Fetching nearest police station...</div>
+    <div id="hospital">Fetching nearest hospital...</div>
+  </div>
+
+  <footer>© 2025 Smart Tourist Safety System</footer>
+
+  <script>
+    const panicBtn = document.getElementById("panicBtn");
+    const sosLog = document.getElementById("sosLog");
+    const policeDiv = document.getElementById("police");
+    const hospitalDiv = document.getElementById("hospital");
+    const sosNumberInput = document.getElementById("sosNumber");
+    const saveNumberBtn = document.getElementById("saveNumberBtn");
+
+    // Load saved SOS number
+    if(localStorage.getItem("sosNumber")){
+      sosNumberInput.value = localStorage.getItem("sosNumber");
+    }
+
+    saveNumberBtn.addEventListener("click", ()=>{
+      const number = sosNumberInput.value.trim();
+      if(number){
+        localStorage.setItem("sosNumber", number);
+        alert("SOS number saved!");
+      }else{
+        alert("Please enter a valid number.");
+      }
+    });
+
+    function sendSOS(lat, lng) {
+      const number = localStorage.getItem("sosNumber");
+      if(!number){
+        alert("Please save your SOS number first!");
+        return;
+      }
+      const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
+      const time = new Date().toLocaleTimeString();
+
+      // Update log
+      sosLog.innerHTML = `
+        🚨 SOS Alert Sent! <br>
+        <strong>Time:</strong> ${time} <br>
+        <strong>Latitude:</strong> ${lat} <br>
+        <strong>Longitude:</strong> ${lng} <br>
+        <strong>SOS Number:</strong> ${number} <br>
+        <strong>Google Maps:</strong> <a href="${mapLink}" target="_blank">${mapLink}</a>
+      `;
+
+      // Open SMS app with prefilled message
+      const smsBody = encodeURIComponent(`🚨 SOS! I need help! My location: ${mapLink}`);
+      window.location.href = `sms:${number}?body=${smsBody}`;
+    }
+
+    function fetchNearby(lat, lng) {
+      const query = `
+        [out:json];
+        (
+          node(around:3000,${lat},${lng})[amenity=police];
+          node(around:3000,${lat},${lng})[amenity=hospital];
+        );
+        out body;
+        >;
+        out skel qt;
+      `;
+      fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        body: query
+      })
+      .then(res => res.json())
+      .then(data => {
+        let police = data.elements.find(e => e.tags && e.tags.amenity === "police");
+        let hospital = data.elements.find(e => e.tags && e.tags.amenity === "hospital");
+
+        policeDiv.innerHTML = police 
+          ? `<div class="contact-item"><strong>🚔 Police:</strong> ${police.tags.name || "Nearest Police Station"} <br>📍 <a href="https://www.google.com/maps?q=${police.lat},${police.lon}" target="_blank">View on Map</a></div>`
+          : `<div class="contact-item">🚔 No police station found nearby.</div>`;
+
+        hospitalDiv.innerHTML = hospital 
+          ? `<div class="contact-item"><strong>🏥 Hospital:</strong> ${hospital.tags.name || "Nearest Hospital"} <br>📍 <a href="https://www.google.com/maps?q=${hospital.lat},${hospital.lon}" target="_blank">View on Map</a></div>`
+          : `<div class="contact-item">🏥 No hospital found nearby.</div>`;
+      })
+      .catch(err => {
+        console.error(err);
+        policeDiv.innerHTML = "🚔 Could not fetch police station.";
+        hospitalDiv.innerHTML = "🏥 Could not fetch hospital.";
+      });
+    }
+
+    panicBtn.addEventListener("click", () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const lat = pos.coords.latitude.toFixed(5);
+            const lng = pos.coords.longitude.toFixed(5);
+            sendSOS(lat, lng);
+            fetchNearby(lat, lng);
+          },
+          err => { alert("Error getting location: " + err.message); }
+        );
+      } else {
+        alert("Geolocation not supported in this browser.");
+      }
+    });
+  </script>
+</body>
+</html>

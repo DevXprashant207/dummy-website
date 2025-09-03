@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tourist Insights - Smart Tourist Monitoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Global Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background: #0f172a;
+      color: #f1f5f9;
+      line-height: 1.6;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ===== Container ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ===== Header ===== */
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .section-header h1 {
+      font-size: 2.5rem;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+    .section-header p {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+    }
+
+    /* ===== Cards ===== */
+    .insights-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 15px;
+      padding: 25px 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .card h3 {
+      font-size: 1.5rem;
+      color: #38bdf8;
+      margin-bottom: 15px;
+    }
+    .card p {
+      font-size: 1rem;
+      color: #cbd5e1;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      border-top: 1px solid #334155;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 768px) {
+      .section-header h1 {
+        font-size: 2rem;
+      }
+      .card h3 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      <h1>Tourist Insights</h1>
+      <p>Smart analytics help improve tourism services and ensure a safer, better experience for visitors.</p>
+    </div>
+
+    <!-- Insights Cards -->
+    <div class="insights-cards">
+      <div class="card">
+        <h3>Enhance Tourist Services</h3>
+        <p>Tailor services and recommendations to visitor preferences using real-time data.</p>
+      </div>
+      <div class="card">
+        <h3>Optimize Resource Management</h3>
+        <p>Predict peak tourist times and allocate resources efficiently to avoid overcrowding.</p>
+      </div>
+      <div class="card">
+        <h3>Improve Safety</h3>
+        <p>Monitor incident reports and identify high-risk areas to ensure visitor safety.</p>
+      </div>
+      <div class="card">
+        <h3>Boost Local Economy</h3>
+        <p>Guide tourists toward local attractions and businesses, increasing community revenue.</p>
+      </div>
+      <div class="card">
+        <h3>Analyze Visitor Trends</h3>
+        <p>Understand where tourists go most frequently and what activities they prefer.</p>
+      </div>
+      <div class="card">
+        <h3>Reduce Environmental Impact</h3>
+        <p>Track tourist activity to minimize strain on natural resources and preserve sites.</p>
+      </div>
+      <div class="card">
+        <h3>Enhance Transportation</h3>
+        <p>Use data to improve traffic flow, public transit, and pedestrian safety for tourists.</p>
+      </div>
+      <div class="card">
+        <h3>Personalized Recommendations</h3>
+        <p>Offer customized travel plans and experiences based on individual preferences.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

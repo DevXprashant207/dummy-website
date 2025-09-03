@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Tourist Safety</title>
+  <style>
+    /* ===== Global Styles ===== */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif;}
+    body{background:#0f172a;color:#f1f5f9;line-height:1.6;scroll-behavior:smooth;}
+    a{text-decoration:none;color:inherit;}
+    section{padding:80px 20px;max-width:1200px;margin:auto;}
+    h2{font-size:2.5rem;text-align:center;margin-bottom:20px;
+      background:linear-gradient(90deg,#06b6d4,#7c3aed);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    p{color:#cbd5e1;font-size:1rem;}
+    
+    /* Navbar */
+    header{position:fixed;top:0;width:100%;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:15px 40px;background:rgba(15,23,42,0.7);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1);}
+    header h1{font-size:1.4rem;font-weight:bold;color:#06b6d4;}
+    nav{display:flex;gap:25px;}
+    nav a{color:#e2e8f0;font-weight:500;transition:0.3s;}
+    nav a:hover{color:#7c3aed;}
+
+    /* Hero */
+    .hero{height:100vh;display:flex;justify-content:center;align-items:center;text-align:center;background:linear-gradient(rgba(15,23,42,0.85),rgba(15,23,42,0.85)),url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e") no-repeat center/cover;padding:20px;}
+    .hero-content{max-width:700px;padding:40px;border-radius:20px;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);animation:fadeIn 1.5s ease;}
+    .hero-content h2{font-size:3rem;margin-bottom:20px;}
+    .hero-content p{margin-bottom:30px;font-size:1.1rem;}
+    .btn{display:inline-block;padding:14px 32px;border-radius:30px;background:linear-gradient(90deg,#06b6d4,#7c3aed);color:#fff;font-weight:600;font-size:1rem;transition:0.3s;box-shadow:0 6px 20px rgba(124,58,237,0.5);}
+    .btn:hover{transform:translateY(-3px);opacity:0.9;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+    /* About */
+    .about{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+    .about img{width:100%;border-radius:20px;}
+    .about-text p{font-size:1.05rem;margin-bottom:15px;}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:20px;}
+    .stat-box{background:rgba(255,255,255,0.05);padding:20px;border-radius:15px;text-align:center;}
+    .stat-box h3{color:#06b6d4;font-size:1.6rem;margin-bottom:5px;}
+
+    /* Features */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+    .card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:25px;border-radius:16px;transition:0.3s;}
+    .card:hover{transform:translateY(-8px);box-shadow:0 10px 20px rgba(0,0,0,0.4);}
+    .card h3{margin-bottom:10px;color:#06b6d4;}
+
+    /* Testimonials */
+    .testimonials{margin-top:50px;}
+    .testimonial-box{background:rgba(255,255,255,0.05);padding:20px;border-radius:15px;margin:15px 0;}
+    .testimonial-box p{font-style:italic;}
+    .testimonial-box span{display:block;margin-top:10px;font-weight:bold;color:#06b6d4;}
+
+    /* Digital ID */
+    .form-container{background:rgba(255,255,255,0.05);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);max-width:700px;margin:auto;}
+    form{display:grid;gap:15px;}
+    input,textarea{padding:12px;border:none;border-radius:10px;background:#1e293b;color:#fff;}
+    input:focus,textarea:focus{outline:2px solid #06b6d4;}
+    button{padding:12px;border:none;border-radius:25px;cursor:pointer;background:linear-gradient(90deg,#06b6d4,#7c3aed);color:#fff;font-weight:bold;transition:0.3s;}
+    button:hover{opacity:0.9;}
+    .note{font-size:0.9rem;color:#94a3b8;margin-top:10px;}
+
+    /* Dashboard */
+    .dashboard-grid{display:grid;grid-template-columns: repeat(auto-fit, minmax(250px,1fr));gap:18px;margin-top:20px}
+    .stat{padding:18px;border-radius:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+    .stat h3{margin:0 0 6px}
+    .small{font-size:13px; color:#94a3b8}
+    .bar{height:8px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));border-radius:999px;margin-top:10px;overflow:hidden}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,#06b6d4,#7c3aed);border-radius:999px}
+
+    /* FAQ */
+    .faq{margin-top:50px;}
+    .faq-item{background:rgba(255,255,255,0.05);padding:15px;border-radius:12px;margin-bottom:10px;}
+    .faq-item h4{color:#7c3aed;margin-bottom:8px;}
+
+    /* Contact */
+    .contact form{max-width:600px;margin:auto;}
+
+    /* Footer */
+    footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.1);background:#0f172a;color:#94a3b8;font-size:0.9rem;}
+    footer .links{margin-top:10px;display:flex;justify-content:center;gap:20px;font-size:0.9rem;}
+    footer a{color:#94a3b8;}
+    footer a:hover{color:#06b6d4;}
+
+    /* Responsive */
+    @media(max-width:768px){
+      .about{grid-template-columns:1fr;}
+      .hero-content h2{font-size:2rem;}
+      nav{gap:15px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <h1>Smart Tourist Safety</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#features">Features</a>
+      <a href="#digital-id">Digital ID</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h2>Smart Tourist Safety & Digital ID</h2>
+      <p>Every tourist receives a unique blockchain-based ID ensuring security, trust, and real-time protection with AI-powered monitoring.</p>
+      <a href="id.html" class="btn">Generate Your Digital ID</a>
+    </div>
+  </section>
+
+  
+  <!-- About Us -->
+  <section id="about">
+    <h2>About Us</h2>
+    <div class="about">
+      <div class="about-text">
+        <p>We are dedicated to ensuring tourist safety through AI, blockchain, and geo-fencing. Our system provides real-time monitoring, emergency response, and tamper-proof digital identities for every tourist, especially in high-risk regions like the Northeast where traditional methods are insufficient.</p>
+        <p>Our mission is simple: <b>Safe Travel, Happy Memories</b>. With technology-driven solutions, we aim to protect tourists while supporting local authorities in managing incidents effectively.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Tourism">
+    </div>
+    <div class="stats">
+      <div class="stat-box"><h3>50K+</h3><p>Tourists Protected</p></div>
+      <div class="stat-box"><h3>24/7</h3><p>Emergency Support</p></div>
+      <div class="stat-box"><h3>99.9%</h3><p>System Reliability</p></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <h2>Features</h2>
+    <div class="features">
+      <a href="id.html" class="card-link">
+        <div class="card">
+          <h3>Blockchain ID</h3>
+            <p>Unique, tamper-proof IDs issued at entry points.</p>
+            
+        </div>
+      </a>
+      <a href="geofencing.html">
+      <div class="card"><h3>Geo-Fencing</h3><p>Alerts when tourists enter restricted zones.</p></div>
+      </a>
+
+      <a href="panicbutton.html">
+      <div class="card"><h3>Panic Button</h3><p>Instant SOS with live location to police & contacts.</p></div>
+      </a>
+
+      <a href="aimonitoring.html">
+      <div class="card"><h3>AI Monitoring</h3><p>Detects anomalies like inactivity or route deviation.</p></div>
+      </a>
+       <a href="#dashboard">
+      <div class="card"><h3>Dashboard</h3><p>Real-time visualizations for tourism authorities.</p></div>
+      </a> 
+
+
+      <a href="dataprivacy.html">
+      <div class="card"><h3>Data Privacy</h3><p>Your personal information is encrypted & secure.</p></div>
+      </a>
+
+      <a href="touristInsights.html">
+      <div class="card"><h3>Tourist Insights</h3><p>Smart analytics help improve tourism services.</p></div>
+      </a>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials">
+      <h2>What Tourists Say</h2>
+      <div class="testimonial-box">
+        <p>"The digital ID gave me peace of mind while traveling in remote areas. I felt safe throughout my journey!"</p>
+        <span>- Riya Sharma, Tourist from Delhi</span>
+      </div>
+      <div class="testimonial-box">
+        <p>"Thanks to the panic button, local police arrived in minutes when we faced an emergency. Brilliant system!"</p>
+        <span>- John Miller, Tourist from USA</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Dashboard -->
+    <!-- Dashboard (Expanded) -->
+  <section id="dashboard">
+    <h2>Tourism Dashboard</h2>
+    <div class="dashboard-grid">
+      <div class="stat">
+        <h3>Active Tourists</h3>
+        <div class="small">1,243 currently tracked</div>
+        <div class="bar"><i style="width:64%"></i></div>
+      </div>
+
+      <div class="stat">
+        <h3>Alerts Today</h3>
+        <div class="small">High / Medium / Low</div>
+        <div class="bar"><i style="width:28%"></i></div>
+      </div>
+
+      <div class="stat">
+        <h3>Pending Incidents</h3>
+        <div class="small">Awaiting response</div>
+        <div class="bar"><i style="width:16%"></i></div>
+      </div>
+
+      <!-- New Cards -->
+      <div class="stat">
+        <h3>Resolved Incidents</h3>
+        <div class="small">Handled by authorities</div>
+        <div class="bar"><i style="width:82%"></i></div>
+      </div>
+
+      <div class="stat">
+        <h3>Tourist Safety Score</h3>
+        <div class="small">Auto-computed from travel patterns & risk</div>
+        <div class="bar"><i style="width:76%"></i></div>
+        <div style="display:flex; justify-content:space-between; margin-top:12px">
+          <div class="small">Current: <strong>76</strong></div>
+          <div class="small">Avg: <strong>68</strong></div>
+        </div>
+      </div>
+
+      <div class="stat">
+        <h3>Language Support</h3>
+        <div class="small">Active translations</div>
+        <div class="bar"><i style="width:90%"></i></div>
+      </div>
+
+      <div class="stat">
+        <h3>Emergency Response Time</h3>
+        <div class="small">Average in minutes</div>
+        <div class="bar"><i style="width:40%"></i></div>
+        <div class="small" style="margin-top:8px"><strong>12 min</strong> avg</div>
+      </div>
+
+      <div class="stat">
+        <h3>Most Visited Region</h3>
+        <div class="small">Top tourist destination</div>
+        <div class="bar"><i style="width:70%"></i></div>
+        <div class="small" style="margin-top:8px"><strong>Shillong, Meghalaya</strong></div>
+      </div>
+    </div>
+  </section>
+
+
+    <!-- FAQ Section -->
+<section class="faq">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <h4>How secure is my data?</h4>
+      <span>+</span>
+    </div>
+    <div class="faq-answer">
+      <p>All data is encrypted using blockchain technology, making it tamper-proof and secure.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <h4>Is this system free for tourists?</h4>
+      <span>+</span>
+    </div>
+    <div class="faq-answer">
+      <p>Yes, digital IDs are issued free of cost at airports, hotels, and entry points.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <h4>Can I access the system offline?</h4>
+      <span>+</span>
+    </div>
+    <div class="faq-answer">
+      <p>Yes, emergency alerts and panic button work even in low-connectivity zones.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .faq h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #38bdf8;
+  }
+
+  .faq-item {
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.07);
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .faq-item:hover {
+    background: rgba(56, 189, 248, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-question h4 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .faq-question span {
+    font-size: 22px;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+    margin-top: 10px;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  .faq-item.active .faq-answer {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  .faq-item.active .faq-question span {
+    transform: rotate(45deg);
+  }
+</style>
+
+<script>
+  const faqs = document.querySelectorAll(".faq-item");
+
+  faqs.forEach(faq => {
+    faq.addEventListener("click", () => {
+      faq.classList.toggle("active");
+    });
+  });
+</script>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="4" placeholder="Your Message"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Smart Tourist Safety — All rights reserved.
+    <div class="links">
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#terms">Terms of Service</a>
+      <a href="#support">Support</a>
+    </div>
+  </footer>
+</body>
+</html>
